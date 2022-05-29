@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>VendGo</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+      integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+      crossorigin="anonymous"
+    ></script>
+
+    <style>
+
+        body {
+        background: #f7f7f7;
+        }
+
+        .form-box {
+        max-width: 500px;
+        margin: auto;
+        padding: 50px;
+        background: #ffffff;
+        border: 10px solid #f2f2f2;
+        }
+
+        h2, p {
+        text-align: center;
+        }
+
+        input, textarea {
+        width: 100%;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">VendGo</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/retail">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/retail/find_bid">Available Bids</a>
+            </li>
+            <!-- <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled">Disabled</a>
+            </li> -->
+          </ul>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+          <button class="btn btn-outline-primary m-2 active" type="submit">
+            Add a Request
+          </button>
+        </div>
+      </div>
+    </nav>
+
+        <div class="form-box">
+            <h2>Post a Request</h2>
+            <form method="post" id="requestform" class="form" data-vendor-url="{% url 'ajax_load_vendors' %}" data-band-url="{% url 'ajax_load_bands' %}">
+                {%csrf_token%}
+                <div class="form-group my-3">
+                    <label for="material">Material</label>
+                    <select name='material' class="form-control" id="material">
+                      <option value="">---Select Material---</option>
+                      {% for i in material %}
+                      <option value="{{i}}">{{i}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group my-3">
+                    <label for="exampleFormControlSelect1">Vendor</label>
+                    <select name='vendor' class="form-control" id="vendor">
+                    
+                    </select>
+                </div>
+
+                <div class="form-group my-3">
+                    <label for="exampleFormControlSelect1">Band</label>
+                    <select name='band' class="form-control" id="band">
+                    <!-- <option>40-50 for &#8377;400/unit</option>
+                    <option>50-60 for &#8377;300/unit</option>
+                    <option>60-70 for &#8377;200/unit</option> -->
+                    </select>
+                </div>
+
+                <div class="form-group my-3">
+                    <label for="units_required">Number of units you require</label>
+                    <input name="units_required" type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                </div>
+
+                <div class="form-group my-3">
+                    <label for="expiry">Expiry</label>
+                    <input name="expiry" type="date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="">
+                </div>
+
+                <input class="btn btn-primary" type="submit" value="Submit" />
+            </form>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script>
+          $("#material").change(function () {
+            var url = $("#requestform").attr("data-vendor-url");
+            var material_name = $(this).val();
+            $.ajax({                 
+              url: url,    
+              data: {
+                'material': material_name
+              },
+              success: function (data) {
+                $("#vendor").html(data);
+              }
+            });
+          });
+
+          $("#vendor").change(function () {
+            var url = $("#requestform").attr("data-band-url");
+            var vendor_name = $(this).val();
+            var material_name = $('#material').val()
+            $.ajax({                 
+              url: url,    
+              data: {
+                'vendor': vendor_name,
+                'material': material_name
+              },
+              success: function (data) {
+                $("#band").html(data);
+              }
+            });
+          });
+
+          $(document).ready(function()
+          {
+              $('#material').select2();
+              $('#vendor').select2();
+          });
+        </script>
+  </body>
+</html>
